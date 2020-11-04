@@ -41,8 +41,11 @@ attr		db 1Eh		; (18)
 msg		    db 27, '[31;42m  Powrocilismy do trybu rzeczywistego   ',27, '[0m$' ; (19)
 data_size=$-gdt_null		; (20)
 
+; Pozwolilem sobie na zastosowanie pseudo struktury, gdzie pierwszy bajt lancucha to jego dlugosc a dopiero potem sa odpowiednie litery
+; Daje to mozliwosc wykorzystania podprogamy print, ale ze znowu to moje dzielo czasami moze powodowac on bledy, warto wiec zostawic sobie nieco miejsca na pomylke
+; I dodac ze 2-3 spacje po ostatniej literze jesli pojawiaja sie bledy
 segment my_strings use16
-full_name_string	db	15,	'Karol Ostrowski     '
+full_name_string	db	15,	'Karol Ostrowski '
 cores_string	db	19, 'Number of cores: 00      '
 apic_string	db	6,'APIC: '
 htt_string	db	5, 'HTT: '
