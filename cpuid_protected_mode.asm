@@ -1,6 +1,6 @@
-;Wejœcie i wyjœcie z trybu chronionego 
-;Wykorzystano nastêpujace Ÿród³a:
-;P.I.Rudakov, K.G.Finogenov „Jazyk Assemblera uroki programirowania” Dialog MIFI (w jêzyku rosyjskim)
+;Wejscie i wyjscie z trybu chronionego 
+;Wykorzystano nastepujace zródla:
+;P.I.Rudakov, K.G.Finogenov „Jezyk Assemblera uroki programirowania” Dialog MIFI (w jezyku rosyjskim)
 ;http://win32assembly.online.fr/tutorials.html
 ;http://wasm.ru
 
