@@ -1,11 +1,11 @@
-;Wejúcie i wyjúcie z trybu chronionego 
-;Wykorzystano nastÍpujace ürÛd≥a:
-;P.I.Rudakov, K.G.Finogenov ÑJazyk Assemblera uroki programirowaniaî Dialog MIFI (w jÍzyku rosyjskim)
+;Wej≈ìcie i wyj≈ìcie z trybu chronionego 
+;Wykorzystano nast√™pujace ≈∏r√≥d¬≥a:
+;P.I.Rudakov, K.G.Finogenov ‚ÄûJazyk Assemblera uroki programirowania‚Äù Dialog MIFI (w j√™zyku rosyjskim)
 ;http://win32assembly.online.fr/tutorials.html
 ;http://wasm.ru
 
 
-;Struktura opisu deskryptorÛw segmentÛw
+;Struktura opisu deskryptor√≥w segment√≥w
 
 struc descr lim,base_l,base_m,attr_1,attr_2,base_h
 {
@@ -24,7 +24,7 @@ entry	text:main	; (9)
 ;Segment o adresacji16-bitowej
 segment data_16 use16	; (10)
 
-; Tablica globalnych deskryptorÛw GDT
+; Tablica globalnych deskryptor√≥w GDT
 
 gdt_null descr		0,		0,	0,	0,	0,	0		   ; (11) 
 gdt_data descr		data_size-1,	0,	0,	92h,	0,	0      ; (12) 
@@ -34,7 +34,7 @@ gdt_screen descr	3999,		8000h,	0Bh,	92h,	0,	0  ; (15)
 gdt_strings	descr	strings_size-1, 0,	0,	92h,	0,	0
 gdt_size=$-gdt_null
 
-; RÛøne dane programu
+; R√≥¬øne dane programu
 pdescr		df 0		; (16) 
 sym		    db 16		; (17) 
 attr		db 1Eh		; (18) 
@@ -42,6 +42,7 @@ msg		    db 27, '[31;42m  Powrocilismy do trybu rzeczywistego   ',27, '[0m$' ; (
 data_size=$-gdt_null		; (20) 
 
 segment my_strings use16
+full_name_string	db	15,	'Karol Ostrowski'
 cores_string	db	19, 'Number of cores: 00      '
 apic_string	db	6,'APIC: '
 htt_string	db	5, 'HTT: '
@@ -56,7 +57,7 @@ no_string	db	2, 'No'
 cpu_name_string db	58, 'Name:                                                      '
 strings_size=$-cores_string
 
-; Segment rozkazÛw
+; Segment rozkaz√≥w
 ; segment o adresacji16-bitowej
 
 segment text use16   ; (21) 
@@ -69,15 +70,15 @@ main:xor	EAX,EAX     ; (22)
 	mov	FS, AX
 	mov	AX, data_16		; (26)
 	mov	DS,AX			; (27)
-	; Obliczymy 32-bitowy liniowy adres segmentu danych i za≥adujemy go
-; do deskryptora segmentu danych w tablicy globalnych deskryptorÛw GDT
+	; Obliczymy 32-bitowy liniowy adres segmentu danych i za¬≥adujemy go
+; do deskryptora segmentu danych w tablicy globalnych deskryptor√≥w GDT
 	shl	EAX,4			    ; (28) 
 	mov	EBP,EAX 		; (29) 
 	mov	[gdt_data.base_l],AX	; (30) 
 	shr	EAX, 16 		    ; (31) 
 	mov	[gdt_data.base_m],AL	; (32) 
 
-; Wyliczymy i za≥adujemy do GDT liniowy adres segmentu rozkazÛw
+; Wyliczymy i za¬≥adujemy do GDT liniowy adres segmentu rozkaz√≥w
 	xor	EAX,EAX 		; (33) 
 	mov	AX,CS			    ; (34) 
 	shl	EAX,4			    ; (35) 
@@ -85,7 +86,7 @@ main:xor	EAX,EAX     ; (22)
 	shr	EAX,16			    ; (37)
 	mov	[gdt_code.base_m],AL	; (38)
 
-; Wyliczymy i za≥adujemy do GDT liniowy adres segmentu stosu
+; Wyliczymy i za¬≥adujemy do GDT liniowy adres segmentu stosu
 	xor	EAX,EAX 		; (39)
 	mov	AX, SS			; (40)
 	shl	EAX,4			    ; (41)
@@ -101,7 +102,7 @@ main:xor	EAX,EAX     ; (22)
 	shr	EAX,16
 	mov	[gdt_strings.base_m],AL
 
-; Przygotujemy pseudodeskryptor pdescr i za≥adujemy rejestr GDTR
+; Przygotujemy pseudodeskryptor pdescr i za¬≥adujemy rejestr GDTR
 	mov	dword [pdescr+2],EBP	 ; (45)
 	mov	word [pdescr],gdt_size-1 ; (46)
 	lgdt	fword [pdescr]		 ; (47)
@@ -109,37 +110,40 @@ main:xor	EAX,EAX     ; (22)
 
 	cli					     ; (48)
 
-; Przejúcie w tryb chroniony
+; Przej≈ìcie w tryb chroniony
 	mov	EAX,CR0 		 ; (49)
 	or	EAX, 1			 ; (50)
 	mov	CR0,EAX 		 ; (51) 
 
 ; ------------------------------------------------------------------------------------------
-;               Teraz bÍdziemy pracowaÊ w trybie chronionym
+;               Teraz b√™dziemy pracowa√¶ w trybie chronionym
 ; ------------------------------------------------------------------------------------------
 
-; Zapisujemy do CS:IP selektor: przesuniÍcie etykietki continue
+; Zapisujemy do CS:IP selektor: przesuni√™cie etykietki continue
 	db	0EAh				 ; (52) 
 	dw	Continue		     ; (53) 
 	dw	16				     ; (54) 
 Continue:
-; przywracamy moøliwoúÊ adresacji danych (DS) w trybie chronionym
+; przywracamy mo¬øliwo≈ì√¶ adresacji danych (DS) w trybie chronionym
 	mov	AX,8			     ; (55) 
 	mov	DS,AX			     ; (56)
 
-; przywracamy moøliwoúÊ adresacji stosu w trybie chronionym
+; przywracamy mo¬øliwo≈ì√¶ adresacji stosu w trybie chronionym
 	mov	AX,24			 ; (57) 
 	mov	SS,AX			     ; (58)
 
-; przywracamy moøliwoúÊ adresacji danych (ES,FS,GS) w trybie chronionym
+; przywracamy mo¬øliwo≈ì√¶ adresacji danych (ES,FS,GS) w trybie chronionym
 	mov	AX,32			     ; (59) 
 	mov	ES,AX			     ; (60) 
 	mov	GS,AX			 ; (62) 
 
 	mov	AX,40
 	mov	FS, AX
-; Wypisujemy na ekranie bieøπcπ liniÍ znakÛw
-	mov	DI,1600 		 ; (63) 
+; Wypisujemy na ekranie bie¬ø¬πc¬π lini√™ znak√≥w
+	mov	DI,1600 
+	mov	BX, full_name_string
+	call	print
+	call	new_line
 run_cpuid:
 	push	eax
 	push	ebx
@@ -273,8 +277,8 @@ proc_name:
 	pop	ebx
 	pop	eax
 
-; PowrÛt do trybu rzeczywistego
-; utworzymy i za≥adujemy deskryptory dla trybu rzeczywistego
+; Powr√≥t do trybu rzeczywistego
+; utworzymy i za¬≥adujemy deskryptory dla trybu rzeczywistego
 	mov	word [gdt_data.lim], 0FFFFh	; (69) 
 	mov	word [gdt_code.lim], 0FFFFh	; (70) 
 	mov	word [gdt_stack.lim], 0h	; (71) Granica segmentu stosu
@@ -291,13 +295,13 @@ proc_name:
 	push	GS		; (81)
 	pop	GS		    ; (82)
 
-; Wykonamy daleki skok po to, aby ponownie za≥adowaÊ selektor
-; do rejestru CS i zmodyfikowaÊ jego rejestr ukryty
+; Wykonamy daleki skok po to, aby ponownie za¬≥adowa√¶ selektor
+; do rejestru CS i zmodyfikowa√¶ jego rejestr ukryty
 	db	0EAh			; (83) 
 	dw	go			; (84) 
 	dw	16			    ; (85) 
 
-;  Prze≥πczymy tryb procesora
+;  Prze¬≥¬πczymy tryb procesora
 go:	mov	EAX,CR0 	    ; (86) 
 	and	EAX, 0FFFFFFFEh ; (87) 
 	mov	CR0,EAX 	    ; (88) 
@@ -305,11 +309,11 @@ go:	mov	EAX,CR0 	    ; (86)
 	dw	return		; (90) 
 	dw	text			; (91) 
 ; --------------------------------------------------------------------------------------------------------------------
-; Teraz procesor znÛw pracuje w trybie rzeczywistym
+; Teraz procesor zn√≥w pracuje w trybie rzeczywistym
 ; --------------------------------------------------------------------------------------------------------------------
 
 return:
-; PrzywrÛcimy prawid≥owe úrodowisko pracy dla trybu rzeczywistego DOS
+; Przywr√≥cimy prawid¬≥owe ≈ìrodowisko pracy dla trybu rzeczywistego DOS
 	mov	AX, data_16		; (92) 
 	mov	DS,AX			; (93)
 	mov	AX,stk		    ; (94) 
