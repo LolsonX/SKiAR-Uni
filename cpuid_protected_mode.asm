@@ -1,5 +1,5 @@
 ;Wejscie i wyjscie z trybu chronionego 
-;Wykorzystano nastepujace zródla:
+;Wykorzystano nastepujace zridla:
 ;P.I.Rudakov, K.G.Finogenov „Jezyk Assemblera uroki programirowania” Dialog MIFI (w jezyku rosyjskim)
 ;http://win32assembly.online.fr/tutorials.html
 ;http://wasm.ru
@@ -24,7 +24,7 @@ entry	text:main	; (9)
 ;Segment o adresacji16-bitowej
 segment data_16 use16	; (10)
 
-; Tablica globalnych deskryptorów GDT
+; Tablica globalnych deskryptorow GDT
 
 gdt_null descr		0,		0,	0,	0,	0,	0		   ; (11) 
 gdt_data descr		data_size-1,	0,	0,	92h,	0,	0      ; (12) 
@@ -34,7 +34,7 @@ gdt_screen descr	3999,		8000h,	0Bh,	92h,	0,	0  ; (15)
 gdt_strings	descr	strings_size-1, 0,	0,	92h,	0,	0
 gdt_size=$-gdt_null
 
-; Ró¿ne dane programu
+; Rozne dane programu
 pdescr		df 0		; (16) 
 sym		    db 16		; (17) 
 attr		db 1Eh		; (18) 
@@ -57,7 +57,7 @@ no_string	db	2, 'No'
 cpu_name_string db	58, 'Name:                                                      '
 strings_size=$-cores_string
 
-; Segment rozkazów
+; Segment rozkazow
 ; segment o adresacji16-bitowej
 
 segment text use16   ; (21) 
@@ -70,15 +70,15 @@ main:xor	EAX,EAX     ; (22)
 	mov	FS, AX
 	mov	AX, data_16		; (26)
 	mov	DS,AX			; (27)
-	; Obliczymy 32-bitowy liniowy adres segmentu danych i za³adujemy go
-; do deskryptora segmentu danych w tablicy globalnych deskryptorów GDT
+	; Obliczymy 32-bitowy liniowy adres segmentu danych i zaladujemy go
+; do deskryptora segmentu danych w tablicy globalnych deskryptorow GDT
 	shl	EAX,4			    ; (28) 
 	mov	EBP,EAX 		; (29) 
 	mov	[gdt_data.base_l],AX	; (30) 
 	shr	EAX, 16 		    ; (31) 
 	mov	[gdt_data.base_m],AL	; (32) 
 
-; Wyliczymy i za³adujemy do GDT liniowy adres segmentu rozkazów
+; Wyliczymy i zaladujemy do GDT liniowy adres segmentu rozkazow
 	xor	EAX,EAX 		; (33) 
 	mov	AX,CS			    ; (34) 
 	shl	EAX,4			    ; (35) 
@@ -86,7 +86,7 @@ main:xor	EAX,EAX     ; (22)
 	shr	EAX,16			    ; (37)
 	mov	[gdt_code.base_m],AL	; (38)
 
-; Wyliczymy i za³adujemy do GDT liniowy adres segmentu stosu
+; Wyliczymy i zaladujemy do GDT liniowy adres segmentu stosu
 	xor	EAX,EAX 		; (39)
 	mov	AX, SS			; (40)
 	shl	EAX,4			    ; (41)
@@ -110,7 +110,7 @@ main:xor	EAX,EAX     ; (22)
 
 	cli					     ; (48)
 
-; Przejœcie w tryb chroniony
+; Przejscie w tryb chroniony
 	mov	EAX,CR0 		 ; (49)
 	or	EAX, 1			 ; (50)
 	mov	CR0,EAX 		 ; (51) 
@@ -119,27 +119,27 @@ main:xor	EAX,EAX     ; (22)
 ;               Teraz bêdziemy pracowaæ w trybie chronionym
 ; ------------------------------------------------------------------------------------------
 
-; Zapisujemy do CS:IP selektor: przesuniêcie etykietki continue
+; Zapisujemy do CS:IP selektor: przesuniecie etykietki continue
 	db	0EAh				 ; (52) 
 	dw	Continue		     ; (53) 
 	dw	16				     ; (54) 
 Continue:
-; przywracamy mo¿liwoœæ adresacji danych (DS) w trybie chronionym
+; przywracamy mozliwosc adresacji danych (DS) w trybie chronionym
 	mov	AX,8			     ; (55) 
 	mov	DS,AX			     ; (56)
 
-; przywracamy mo¿liwoœæ adresacji stosu w trybie chronionym
+; przywracamy mozliwosc adresacji stosu w trybie chronionym
 	mov	AX,24			 ; (57) 
 	mov	SS,AX			     ; (58)
 
-; przywracamy mo¿liwoœæ adresacji danych (ES,FS,GS) w trybie chronionym
+; przywracamy mozliwosc adresacji danych (ES,FS,GS) w trybie chronionym
 	mov	AX,32			     ; (59) 
 	mov	ES,AX			     ; (60) 
 	mov	GS,AX			 ; (62) 
 
 	mov	AX,40
 	mov	FS, AX
-; Wypisujemy na ekranie bie¿¹c¹ liniê znaków
+; Wypisujemy na ekranie biezaca linie znaków
 	mov	DI,1600 
 	mov	BX, full_name_string
 	call	print
@@ -277,8 +277,8 @@ proc_name:
 	pop	ebx
 	pop	eax
 
-; Powrót do trybu rzeczywistego
-; utworzymy i za³adujemy deskryptory dla trybu rzeczywistego
+; Powrot do trybu rzeczywistego
+; utworzymy i zaladujemy deskryptory dla trybu rzeczywistego
 	mov	word [gdt_data.lim], 0FFFFh	; (69) 
 	mov	word [gdt_code.lim], 0FFFFh	; (70) 
 	mov	word [gdt_stack.lim], 0h	; (71) Granica segmentu stosu
@@ -295,8 +295,8 @@ proc_name:
 	push	GS		; (81)
 	pop	GS		    ; (82)
 
-; Wykonamy daleki skok po to, aby ponownie za³adowaæ selektor
-; do rejestru CS i zmodyfikowaæ jego rejestr ukryty
+; Wykonamy daleki skok po to, aby ponownie zaladowac selektor
+; do rejestru CS i zmodyfikowac jego rejestr ukryty
 	db	0EAh			; (83) 
 	dw	go			; (84) 
 	dw	16			    ; (85) 
@@ -313,7 +313,7 @@ go:	mov	EAX,CR0 	    ; (86)
 ; --------------------------------------------------------------------------------------------------------------------
 
 return:
-; Przywrócimy prawid³owe œrodowisko pracy dla trybu rzeczywistego DOS
+; Przywrocimy prawidlowe srodowisko pracy dla trybu rzeczywistego DOS
 	mov	AX, data_16		; (92) 
 	mov	DS,AX			; (93)
 	mov	AX,stk		    ; (94) 
