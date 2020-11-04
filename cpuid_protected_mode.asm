@@ -1,4 +1,4 @@
-;Wejscie i wyjscie z trybu chronionego 
+;Wejscie i wyjscie z trybu chronionego
 ;Wykorzystano nastepujace zridla:
 ;P.I.Rudakov, K.G.Finogenov „Jezyk Assemblera uroki programirowania” Dialog MIFI (w jezyku rosyjskim)
 ;http://win32assembly.online.fr/tutorials.html
@@ -9,12 +9,12 @@
 
 struc descr lim,base_l,base_m,attr_1,attr_2,base_h
 {
-	.lim	dw	lim	    ; (1) 
-	.base_l dw	base_l	; (2) 
-	.base_m db	base_m	; (3) 
-	.attr_1 db	attr_1	; (4) 
-	.attr_2 db	attr_2	; (5) 
-	.base_h db	base_h	; (6) 
+	.lim	dw	lim	    ; (1)
+	.base_l dw	base_l	; (2)
+	.base_m db	base_m	; (3)
+	.attr_1 db	attr_1	; (4)
+	.attr_2 db	attr_2	; (5)
+	.base_h db	base_h	; (6)
 }
 
 format	MZ		; (7)
@@ -26,23 +26,23 @@ segment data_16 use16	; (10)
 
 ; Tablica globalnych deskryptorow GDT
 
-gdt_null descr		0,		0,	0,	0,	0,	0		   ; (11) 
-gdt_data descr		data_size-1,	0,	0,	92h,	0,	0      ; (12) 
-gdt_code descr		code_size-1,	0,	0,	98h,	0,	0      ; (13) 
-gdt_stack descr 	0,		0,	0,	96h,	0,	0	       ; (14) 
-gdt_screen descr	3999,		8000h,	0Bh,	92h,	0,	0  ; (15) 
+gdt_null descr		0,		0,	0,	0,	0,	0		   ; (11)
+gdt_data descr		data_size-1,	0,	0,	92h,	0,	0      ; (12)
+gdt_code descr		code_size-1,	0,	0,	98h,	0,	0      ; (13)
+gdt_stack descr 	0,		0,	0,	96h,	0,	0	       ; (14)
+gdt_screen descr	3999,		8000h,	0Bh,	92h,	0,	0  ; (15)
 gdt_strings	descr	strings_size-1, 0,	0,	92h,	0,	0
 gdt_size=$-gdt_null
 
 ; Rozne dane programu
-pdescr		df 0		; (16) 
-sym		    db 16		; (17) 
-attr		db 1Eh		; (18) 
-msg		    db 27, '[31;42m  Powrocilismy do trybu rzeczywistego   ',27, '[0m$' ; (19) 
-data_size=$-gdt_null		; (20) 
+pdescr		df 0		; (16)
+sym		    db 16		; (17)
+attr		db 1Eh		; (18)
+msg		    db 27, '[31;42m  Powrocilismy do trybu rzeczywistego   ',27, '[0m$' ; (19)
+data_size=$-gdt_null		; (20)
 
 segment my_strings use16
-full_name_string	db	15,	'Karol Ostrowski'
+full_name_string	db	15,	'Karol Ostrowski     '
 cores_string	db	19, 'Number of cores: 00      '
 apic_string	db	6,'APIC: '
 htt_string	db	5, 'HTT: '
@@ -55,16 +55,16 @@ extended_string		db 26, 'Extended instructions: 000     '
 yes_string	db	3, 'Yes'
 no_string	db	2, 'No'
 cpu_name_string db	58, 'Name:                                                      '
-strings_size=$-cores_string
+strings_size=$-full_name_string
 
 ; Segment rozkazow
 ; segment o adresacji16-bitowej
 
-segment text use16   ; (21) 
-	
-main:xor	EAX,EAX     ; (22) 
-	mov	AX,stk		; (23) 
-	mov	SS,AX		; (24) 
+segment text use16   ; (21)
+
+main:xor	EAX,EAX     ; (22)
+	mov	AX,stk		; (23)
+	mov	SS,AX		; (24)
 	mov	SP,256		; (25)
 	mov	AX, my_strings
 	mov	FS, AX
@@ -72,16 +72,16 @@ main:xor	EAX,EAX     ; (22)
 	mov	DS,AX			; (27)
 	; Obliczymy 32-bitowy liniowy adres segmentu danych i zaladujemy go
 ; do deskryptora segmentu danych w tablicy globalnych deskryptorow GDT
-	shl	EAX,4			    ; (28) 
-	mov	EBP,EAX 		; (29) 
-	mov	[gdt_data.base_l],AX	; (30) 
-	shr	EAX, 16 		    ; (31) 
-	mov	[gdt_data.base_m],AL	; (32) 
+	shl	EAX,4			    ; (28)
+	mov	EBP,EAX 		; (29)
+	mov	[gdt_data.base_l],AX	; (30)
+	shr	EAX, 16 		    ; (31)
+	mov	[gdt_data.base_m],AL	; (32)
 
 ; Wyliczymy i zaladujemy do GDT liniowy adres segmentu rozkazow
-	xor	EAX,EAX 		; (33) 
-	mov	AX,CS			    ; (34) 
-	shl	EAX,4			    ; (35) 
+	xor	EAX,EAX 		; (33)
+	mov	AX,CS			    ; (34)
+	shl	EAX,4			    ; (35)
 	mov	[gdt_code.base_l],AX	; (36)
 	shr	EAX,16			    ; (37)
 	mov	[gdt_code.base_m],AL	; (38)
@@ -96,7 +96,7 @@ main:xor	EAX,EAX     ; (22)
 
 ; Wyliczymy i zaladujemy do GDT liniowy adres segmentu FS
 	xor	EAX,EAX
-	mov	AX,FS 
+	mov	AX,FS
 	shl	EAX,4
 	mov	[gdt_strings.base_l],AX
 	shr	EAX,16
@@ -113,34 +113,34 @@ main:xor	EAX,EAX     ; (22)
 ; Przejscie w tryb chroniony
 	mov	EAX,CR0 		 ; (49)
 	or	EAX, 1			 ; (50)
-	mov	CR0,EAX 		 ; (51) 
+	mov	CR0,EAX 		 ; (51)
 
 ; ------------------------------------------------------------------------------------------
 ;               Teraz bêdziemy pracowaæ w trybie chronionym
 ; ------------------------------------------------------------------------------------------
 
 ; Zapisujemy do CS:IP selektor: przesuniecie etykietki continue
-	db	0EAh				 ; (52) 
-	dw	Continue		     ; (53) 
-	dw	16				     ; (54) 
+	db	0EAh				 ; (52)
+	dw	Continue		     ; (53)
+	dw	16				     ; (54)
 Continue:
 ; przywracamy mozliwosc adresacji danych (DS) w trybie chronionym
-	mov	AX,8			     ; (55) 
+	mov	AX,8			     ; (55)
 	mov	DS,AX			     ; (56)
 
 ; przywracamy mozliwosc adresacji stosu w trybie chronionym
-	mov	AX,24			 ; (57) 
+	mov	AX,24			 ; (57)
 	mov	SS,AX			     ; (58)
 
 ; przywracamy mozliwosc adresacji danych (ES,FS,GS) w trybie chronionym
-	mov	AX,32			     ; (59) 
-	mov	ES,AX			     ; (60) 
-	mov	GS,AX			 ; (62) 
+	mov	AX,32			     ; (59)
+	mov	ES,AX			     ; (60)
+	mov	GS,AX			 ; (62)
 
 	mov	AX,40
 	mov	FS, AX
 ; Wypisujemy na ekranie biezaca linie znaków
-	mov	DI,1600 
+	mov	DI,1600
 	mov	BX, full_name_string
 	call	print
 	call	new_line
@@ -157,11 +157,19 @@ manufacturer:
 	mov	dword [fs:manufacturer_string+23], ecx
 	mov	BX, manufacturer_string
 	call 	print
-	call	new_line 
+	call	new_line
 basic_functions:
 	add	AL,	01h
+	mov	AH,	AL
+	and	AH,	0F0h
+	and	AL,	0Fh
 	call	bin_asc
-	mov	dword [FS:basic_inst_string+22], EAX
+	mov	byte [FS:basic_inst_string+23], AL
+	mov	AL,	AH
+	shr	AL,	4
+	and	AL,	0Fh
+	call	bin_asc
+	mov	byte [FS:basic_inst_string+22], AL
 	mov	BX,	basic_inst_string
 	call	print
 	call 	new_line
@@ -195,7 +203,7 @@ num_cores:
 	call	new_line
 test_apic:
 	mov	BX, apic_string
-	call	print 	
+	call	print
 	mov	eax,	01h
 	cpuid
 	test	edx,	00000200h
@@ -279,17 +287,17 @@ proc_name:
 
 ; Powrot do trybu rzeczywistego
 ; utworzymy i zaladujemy deskryptory dla trybu rzeczywistego
-	mov	word [gdt_data.lim], 0FFFFh	; (69) 
-	mov	word [gdt_code.lim], 0FFFFh	; (70) 
+	mov	word [gdt_data.lim], 0FFFFh	; (69)
+	mov	word [gdt_code.lim], 0FFFFh	; (70)
 	mov	word [gdt_stack.lim], 0h	; (71) Granica segmentu stosu
-	mov	word [gdt_screen.lim], 0FFFFh	; (72) 
+	mov	word [gdt_screen.lim], 0FFFFh	; (72)
 	mov	word [gdt_strings.lim], 0FFFFh
-	push	DS				; (73) 
-	pop	DS				    ; (74) 
-	push	SS				; (75) 
-	pop	SS				    ; (76) 
-	push	ES				; (77) 
-	pop	ES				    ; (78) 
+	push	DS				; (73)
+	pop	DS				    ; (74)
+	push	SS				; (75)
+	pop	SS				    ; (76)
+	push	ES				; (77)
+	pop	ES				    ; (78)
 	push	FS		; (79)
 	pop	FS		    ; (80)
 	push	GS		; (81)
@@ -297,33 +305,33 @@ proc_name:
 
 ; Wykonamy daleki skok po to, aby ponownie zaladowac selektor
 ; do rejestru CS i zmodyfikowac jego rejestr ukryty
-	db	0EAh			; (83) 
-	dw	go			; (84) 
-	dw	16			    ; (85) 
+	db	0EAh			; (83)
+	dw	go			; (84)
+	dw	16			    ; (85)
 
 ;  Prze³¹czymy tryb procesora
-go:	mov	EAX,CR0 	    ; (86) 
-	and	EAX, 0FFFFFFFEh ; (87) 
-	mov	CR0,EAX 	    ; (88) 
-	db	0EAh			; (89) 
-	dw	return		; (90) 
-	dw	text			; (91) 
+go:	mov	EAX,CR0 	    ; (86)
+	and	EAX, 0FFFFFFFEh ; (87)
+	mov	CR0,EAX 	    ; (88)
+	db	0EAh			; (89)
+	dw	return		; (90)
+	dw	text			; (91)
 ; --------------------------------------------------------------------------------------------------------------------
 ; Teraz procesor znów pracuje w trybie rzeczywistym
 ; --------------------------------------------------------------------------------------------------------------------
 
 return:
 ; Przywrocimy prawidlowe srodowisko pracy dla trybu rzeczywistego DOS
-	mov	AX, data_16		; (92) 
+	mov	AX, data_16		; (92)
 	mov	DS,AX			; (93)
-	mov	AX,stk		    ; (94) 
-	mov	SS,AX			; (95) 
+	mov	AX,stk		    ; (94)
+	mov	SS,AX			; (95)
 	mov	SP,256		    ; (96)
-	sti				    ; (97) 
+	sti				    ; (97)
 
 ; Pracujemy w DOS
-	mov	AH,09h	; (98) 
-	mov	DX, msg ; (99) 
+	mov	AH,09h	; (98)
+	mov	DX, msg ; (99)
 	int	21h		; (100)
 	mov	AX,4C00h; (101)
 	int	21h		; (102)
@@ -359,7 +367,7 @@ new_line:
 	div	bx
 	mov	cx, 160
 	sub	cx, dx
-	add	di, cx	
+	add	di, cx
 	pop eax
 	pop ecx
 	pop edx
@@ -395,7 +403,7 @@ lettr:
 ok:
 	ret
 code_size=$-main	; (103)
- 
+
 
 ; segment stosu
 segment stk use16	; (104)
