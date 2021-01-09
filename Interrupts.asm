@@ -1,7 +1,7 @@
 ;Podprogramy przerwan sprzetowych z licznika i klawiatury
-; Struktura do opisu deskryptorów segmentów
-;Wykorzystano nastêpujace Ÿród³a:
-;P.I.Rudakov, K.G.Finogenov „Jazyk Assemblera uroki programirowania” Dialog MIFI (w jêzyku rosyjskim)
+; Struktura do opisu deskryptorÃ³w segmentÃ³w
+;Wykorzystano nastÄ™pujace ÅºrÃ³dÅ‚a:
+;P.I.Rudakov, K.G.Finogenov â€žJazyk Assemblera uroki programirowaniaâ€ Dialog MIFI (w jÄ™zyku rosyjskim)
 ;http://win32assembly.online.fr/tutorials.html
 ;http://wasm.ru
 
@@ -18,21 +18,21 @@ struc descr lim,base_l,base_m,attr_1,attr_2,base_h
 ;Struktura do opisu furtek pulapek
 struc trap offs_l,sel,cntr,dtype,offs_h
 {
-	.offs_l	dw	offs_l	; (7) Offset proced. obs³ugi przerwania (bity 0..15)
-	.sel	dw	sel		; (8) Selektor segmentu rozkazów 
+	.offs_l	dw	offs_l	; (7) Offset proced. obsÅ‚ugi przerwania (bity 0..15)
+	.sel	dw	sel		; (8) Selektor segmentu rozkazÃ³w 
 	.cntr	db	cntr	; (9) Niewykorzystany
-	.dtype	db	dtype	; (10) Typ furtki - pu³apka
-	.offs_h	dw	offs_h	; (11) Offset proced. obs³ugi przerwania (bity 16..31) 
+	.dtype	db	dtype	; (10) Typ furtki - puÅ‚apka
+	.offs_h	dw	offs_h	; (11) Offset proced. obsÅ‚ugi przerwania (bity 16..31) 
 }
 
-format	MZ              ; (12)format pliku wyjœciowego 
-stack	stk:256         ; (13)ustawienie wielkoœci stosu
-entry	text:main       ; (14)punkt wejœcia do programu
+format	MZ              ; (12)format pliku wyjÅ›ciowego 
+stack	stk:256         ; (13)ustawienie wielkoÅ›ci stosu
+entry	text:main       ; (14)punkt wejÅ›cia do programu
 
 ;Segment danych
 segment data_16 use16
 
-; Tablica globalnych deskryptorów GDT
+; Tablica globalnych deskryptorÃ³w GDT
 
 gdt_null descr		0,		0,	0,	0,	0,	0; (15)Deskryptor zerowy (null, dummy)
 gdt_data descr		data_size-1,	0,	0,	92h,	0,	0; (16)Deskryptor segmentu danych
@@ -42,24 +42,24 @@ gdt_screen descr	3999,		8000h,	0Bh,	92h,	0,	0  ; (19)Deskryptor segmentu Video
 gdt_size=$-gdt_null
 
 ;Tablica IDT
-exception0	trap	exc0,	16,	0,	8Fh,	0	;(21)Deskryptor wyj¹tku  	0
-exception1	trap	dummy,	16,	0,	8Fh,	0	;(22)Deskryptor wyj¹tku  	1
-exception2	trap	dummy,	16,	0,	8Fh,	0	;(23)Deskryptor wyj¹tku  	2
-exception3	trap	exc3,	16,	0,	8Fh,	0	;(24)Deskryptor wyj¹tku  	3
-exception4	trap	dummy,	16,	0,	8Fh,	0	;(25)Deskryptor wyj¹tku  	4
-exception5	trap	dummy,	16,	0,	8Fh,	0	;(26)Deskryptor wyj¹tku  	5
-exception6	trap	dummy,	16,	0,	8Fh,	0	;(27)Deskryptor wyj¹tku  	6
-exception7	trap	dummy,	16,	0,	8Fh,	0	;(28)Deskryptor wyj¹tku  	7
-exception8	trap	dummy,	16,	0,	8Fh,	0	;(29)Deskryptor wyj¹tku  	8
-exception9	trap	dummy,	16,	0,	8Fh,	0	;(30)Deskryptor wyj¹tku  	9
-exception10	trap	exc10,	16,	0,	8Fh,	0	;(31)Deskryptor wyj¹tku  	10
-exception11	trap	exc11,	16,	0,	8Fh,	0	;(32)Deskryptor wyj¹tku  	11
-exception12	trap	exc12,	16,	0,	8Fh,	0	;(33)Deskryptor wyj¹tku  	12
-exception13	trap	exc13,	16,	0,	8Fh,	0	;(34)Deskryptor wyj¹tku  	13
-exception14	trap	dummy,	16,	0,	8Fh,	0	;(35)Deskryptor wyj¹tku  	14
-exception15	trap	dummy,	16,	0,	8Fh,	0	;(36)Deskryptor wyj¹tku  	15(którego brak)
-exception16	trap	dummy,	16,	0,	8Fh,	0	;(37)Deskryptor wyj¹tku  	16
-exception17	trap	dummy,	16,	0,	8Fh,	0	;(38)Deskryptor wyj¹tku  	17
+exception0	trap	exc0,	16,	0,	8Fh,	0	;(21)Deskryptor wyjÄ…tku  	0
+exception1	trap	dummy,	16,	0,	8Fh,	0	;(22)Deskryptor wyjÄ…tku  	1
+exception2	trap	dummy,	16,	0,	8Fh,	0	;(23)Deskryptor wyjÄ…tku  	2
+exception3	trap	exc3,	16,	0,	8Fh,	0	;(24)Deskryptor wyjÄ…tku  	3
+exception4	trap	dummy,	16,	0,	8Fh,	0	;(25)Deskryptor wyjÄ…tku  	4
+exception5	trap	dummy,	16,	0,	8Fh,	0	;(26)Deskryptor wyjÄ…tku  	5
+exception6	trap	dummy,	16,	0,	8Fh,	0	;(27)Deskryptor wyjÄ…tku  	6
+exception7	trap	dummy,	16,	0,	8Fh,	0	;(28)Deskryptor wyjÄ…tku  	7
+exception8	trap	dummy,	16,	0,	8Fh,	0	;(29)Deskryptor wyjÄ…tku  	8
+exception9	trap	dummy,	16,	0,	8Fh,	0	;(30)Deskryptor wyjÄ…tku  	9
+exception10	trap	exc10,	16,	0,	8Fh,	0	;(31)Deskryptor wyjÄ…tku  	10
+exception11	trap	exc11,	16,	0,	8Fh,	0	;(32)Deskryptor wyjÄ…tku  	11
+exception12	trap	exc12,	16,	0,	8Fh,	0	;(33)Deskryptor wyjÄ…tku  	12
+exception13	trap	exc13,	16,	0,	8Fh,	0	;(34)Deskryptor wyjÄ…tku  	13
+exception14	trap	dummy,	16,	0,	8Fh,	0	;(35)Deskryptor wyjÄ…tku  	14
+exception15	trap	dummy,	16,	0,	8Fh,	0	;(36)Deskryptor wyjÄ…tku  	15(ktÃ³rego brak)
+exception16	trap	dummy,	16,	0,	8Fh,	0	;(37)Deskryptor wyjÄ…tku  	16
+exception17	trap	dummy,	16,	0,	8Fh,	0	;(38)Deskryptor wyjÄ…tku  	17
 	rept 62 {
 		dw	dummy
 		dw	16
@@ -88,49 +88,49 @@ data_size=$-gdt_null                            ;(49) Rozmiar segmentu danych
 
 
 
-;Segment rozkazów
+;Segment rozkazÃ³w
 segment text use16                              ;(50)segment o adresacji 16 bitowej
   
-exc0:               ;(51)obs³uga wyj¹tku 0
-	mov	AX, 0		; (49)wyprowadzenie na ekran numeru wyj¹tku
-	jmp	home		; (50)wyjœcie
+exc0:               ;(51)obsÅ‚uga wyjÄ…tku 0
+	mov	AX, 0		; (49)wyprowadzenie na ekran numeru wyjÄ…tku
+	jmp	home		; (50)wyjÅ›cie
 
-exc3:               ;(54) obs³uga wyj¹tku 3
-	mov	AX, 3		; (52) wyprowadzenie na ekran numeru wyj¹tku
-	jmp	home		; (53) wyjœcie
+exc3:               ;(54) obsÅ‚uga wyjÄ…tku 3
+	mov	AX, 3		; (52) wyprowadzenie na ekran numeru wyjÄ…tku
+	jmp	home		; (53) wyjÅ›cie
 
-exc10:              ;(57) obs³uga wyj¹tku 10
-	mov	AX,0Ah		; (55) wyprowadzenie na ekran numeru wyj¹tku
-	jmp	home		; (56) wyjœcie
+exc10:              ;(57) obsÅ‚uga wyjÄ…tku 10
+	mov	AX,0Ah		; (55) wyprowadzenie na ekran numeru wyjÄ…tku
+	jmp	home		; (56) wyjÅ›cie
 
-exc11:              ;(60) obs³uga wyj¹tku 11
-	mov	AX,0Bh		; (58) wyprowadzenie na ekran numeru wyj¹tku
-	jmp	home		; (59) wyjœcie
+exc11:              ;(60) obsÅ‚uga wyjÄ…tku 11
+	mov	AX,0Bh		; (58) wyprowadzenie na ekran numeru wyjÄ…tku
+	jmp	home		; (59) wyjÅ›cie
 
-exc12:              ;(63) obs³uga wyj¹tku 12
-	mov	AX,0Ch		; (61) wyprowadzenie na ekran numeru wyj¹tku
-	jmp	home		; (62) wyjœcie
+exc12:              ;(63) obsÅ‚uga wyjÄ…tku 12
+	mov	AX,0Ch		; (61) wyprowadzenie na ekran numeru wyjÄ…tku
+	jmp	home		; (62) wyjÅ›cie
 
-exc13:              ;(66) obs³uga wyj¹tku 13
-	pop	EAX         ; (64)zdjêcie ze stosu kodu b³êdu
-	mov	SI,string+19; (65)przekszta³cenie i wyœwietlenie
+exc13:              ;(66) obsÅ‚uga wyjÄ…tku 13
+	pop	EAX         ; (64)zdjÄ™cie ze stosu kodu bÅ‚Ä™du
+	mov	SI,string+19; (65)przeksztaÅ‚cenie i wyÅ›wietlenie
 	call	wrd_asc ; (66)
-	pop	EAX         ; (67)zdjêcie ze stosu EIP 
-	mov	SI,string+14; (68)przekszta³cenie i wyœwietlenie
+	pop	EAX         ; (67)zdjÄ™cie ze stosu EIP 
+	mov	SI,string+14; (68)przeksztaÅ‚cenie i wyÅ›wietlenie
 	call	wrd_asc ; (69)
 	shr	EAX,16      ; (70)
 	mov	SI,string+10; (71)
 	call	wrd_asc ; (72)
-	pop	EAX         ; (73)zdjêcie ze stosu CS
-	mov	SI,string+5 ; (74)przekszta³cenie i wyœwietlenie
+	pop	EAX         ; (73)zdjÄ™cie ze stosu CS
+	mov	SI,string+5 ; (74)przeksztaÅ‚cenie i wyÅ›wietlenie
 	call	wrd_asc ; (75)
 
-	mov	AX,0Dh		; (76) wyprowadzenie na ekran numeru wyj¹tku
-	jmp	home		; (77) wyjœcie
+	mov	AX,0Dh		; (76) wyprowadzenie na ekran numeru wyjÄ…tku
+	jmp	home		; (77) wyjÅ›cie
 	
-dummy:              ;(81) obs³uga pozosta³ych wyj¹tków 
-	mov 	AX,5555h; (79)symboliczny kod pozosta³ych wyj¹tków
-	jmp 	home	; (80) wyjœcie
+dummy:              ;(81) obsÅ‚uga pozostaÅ‚ych wyjÄ…tkÃ³w 
+	mov 	AX,5555h; (79)symboliczny kod pozostaÅ‚ych wyjÄ…tkÃ³w
+	jmp 	home	; (80) wyjÅ›cie
 
 
 ;Procedura obs^ugi przerwania od zegara 
@@ -202,11 +202,11 @@ dalej:	in	AL,61h       ;(103) Uzyskamy zawartosc portu B
 
 
 main:
-	xor	EAX,EAX      ;(113)oczyœciæ EAX
-	mov	AX,stk       ;(114)£adowanie adresu segmentu stosu
+	xor	EAX,EAX      ;(113)oczyÅ›ciÄ‡ EAX
+	mov	AX,stk       ;(114)Åadowanie adresu segmentu stosu
 	mov	SS,AX        ;(115)do rejestru segmentowego
-	mov	SP,256       ;(116)Wartoœæ pocz¹tkowa wskaŸnika stosu
-	mov	AX,data_16   ;(117)£adowanie do DS adresu  
+	mov	SP,256       ;(116)WartoÅ›Ä‡ poczÄ…tkowa wskaÅºnika stosu
+	mov	AX,data_16   ;(117)Åadowanie do DS adresu  
 	mov	DS,AX        ;(118)segmentu danych
 
 ;Obliczenie i za^adowanie do GDT liniowego adresu segmentu danych
@@ -216,7 +216,7 @@ main:
 	shr	EAX, 16 		    ; (31) 
 	mov	[gdt_data.base_m],AL	; (32)	
 
-;Obliczenie i za³adowanie do GDT liniowego adresu segmentu rozkazow
+;Obliczenie i zaÅ‚adowanie do GDT liniowego adresu segmentu rozkazow
 	xor	EAX,EAX 		; (33) 
 	mov	AX,CS			    ; (34) 
 	shl	EAX,4			    ; (35) 
@@ -237,8 +237,8 @@ main:
 	mov	word [pdescr],gdt_size-1 ; (46)
 	lgdt	fword [pdescr]		 ; (47)
 
-;Blokada obs³ugi przerwañ sprzêtowych
-	cli                            ;(139) Blokada obs³ugi przerwañ
+;Blokada obsÅ‚ugi przerwaÅ„ sprzÄ™towych
+	cli                            ;(139) Blokada obsÅ‚ugi przerwaÅ„
 
 ;Zachowamy maski przerwan kontrolerow
 	in	AL,21h          ;(140)
@@ -302,7 +302,7 @@ continue:           ;(168)
 	mov	FS,AX			 ; (61) 
 	mov	GS,AX
 
-;Zezwolenie na przerwania sprzêtowe
+;Zezwolenie na przerwania sprzÄ™towe
 	sti                     ;(177) 
 
 ;Wyprowadzamy na ekran testowa linie symboli
@@ -359,7 +359,7 @@ scrn1: lodsb                ;(196)
 	dw	16			    ; (85)
 
 			
-;Prze³¹czymy tryb pracy procesora
+;PrzeÅ‚Ä…czymy tryb pracy procesora
 go:
 	mov	EAX,CR0 	    ; (86) 
 	and	EAX, 0FFFFFFFEh ; (87) 
@@ -374,7 +374,7 @@ go:
 
 return:                             ;(223) 
 
-;Przywrócenie œrodowiska dla trybu rzeczywistego
+;PrzywrÃ³cenie Å›rodowiska dla trybu rzeczywistego
 	mov	AX, data_16		; (92) 
 	mov	DS,AX			; (93)
 	mov	AX,stk		    ; (94) 
@@ -382,11 +382,11 @@ return:                             ;(223)
 	mov	SP,256		    ; (96)
 
 ;Przywrocimy stan rejestru IDTR trybu rzeczywistego
-	mov	AX,3FFh                     ;(229)Granica tablicy wektorów przerwañ (1 Kbajt)
+	mov	AX,3FFh                     ;(229)Granica tablicy wektorÃ³w przerwaÅ„ (1 Kbajt)
 	mov	word [pdescr],AX            ;(230)
-	mov	EAX, 0                      ;(231)Przesuniàcie tablicy wektorów 
+	mov	EAX, 0                      ;(231)PrzesuniÅ•cie tablicy wektorÃ³w 
 	mov	dword [pdescr+2],EAX        ;(232)
-	lidt	fword [pdescr]          ;(233)Za³adowanie deskryptora do IDTR
+	lidt	fword [pdescr]          ;(233)ZaÅ‚adowanie deskryptora do IDTR
 
 ;Ponowna inicjalizacja kontrolera przerwan Master
 ;i ustawienie jego na bazowy wektor 8
@@ -405,7 +405,7 @@ return:                             ;(223)
 	mov	AL,[slave]                  ;(244)Maska przerwan Slave'a
 	out	0A1h,AL                     ;(245)
 
-	sti                             ;(246)Zezwolimy obs³ugê przerwañ sprzêtowych
+	sti                             ;(246)Zezwolimy obsÅ‚ugÄ™ przerwaÅ„ sprzÄ™towych
 
 ;Pracujemy w DOS'ie
 	mov	AH,09h	; (98) 
@@ -416,9 +416,9 @@ return:                             ;(223)
 	ret 
 
 ; Wykorzystywane procedury - podprogramy wrd_asc i bin_asc
-; przekszta³cenia liczby binarnej w symboliczne przedstawienie hex;
-;Podprogram wrd_asc przekszta³cenia s³owa 
-;Przy wywo³aniu przekszta³cana liczba znajduje siê AX, 
+; przeksztaÅ‚cenia liczby binarnej w symboliczne przedstawienie hex;
+;Podprogram wrd_asc przeksztaÅ‚cenia sÅ‚owa 
+;Przy wywoÅ‚aniu przeksztaÅ‚cana liczba znajduje siÄ™ AX, 
 ;DS:SI -> miejsce dla rezultatu
 wrd_asc: 
 	pusha 			    ; (156) 
@@ -441,8 +441,8 @@ cccc: push	CX		    ; (160)
 	popa			    ; (173) 
 	ret			        ; (174) 
 
-;Podprogram przekszta³cenia cyfry hex 
-; Argument - czwórka bitów w m³odszej czêœci AL., rezultat w AL
+;Podprogram przeksztaÅ‚cenia cyfry hex 
+; Argument - czwÃ³rka bitÃ³w w mÅ‚odszej czÄ™Å›ci AL., rezultat w AL
 bin_asc:
 	cmp 	AL, 9		; (175) 
 	ja	lettr		    ; (176) 
